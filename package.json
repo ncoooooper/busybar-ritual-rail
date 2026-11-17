@@ -2,7 +2,7 @@
   "name": "busybar-ritual-rail",
   "private": true,
   "version": "0.1.0",
-  "description": "Ritual Rail",
+  "description": "Keep three daily routines on your desk with custom steps, undo and automatic progress recovery.",
   "author": "ncoooooper",
   "type": "module",
   "scripts": {

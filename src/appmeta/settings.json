@@ -1,0 +1,24 @@
+{
+  "format_version": 1,
+  "version": 1,
+  "fields": {
+    "route0": {
+      "type": "string",
+      "label": "Morning steps (use |)",
+      "max_length": 120,
+      "default": "Water | Light | Stretch | Plan"
+    },
+    "route1": {
+      "type": "string",
+      "label": "Focus steps (use |)",
+      "max_length": 120,
+      "default": "Clear desk | Pick task | Silence phone"
+    },
+    "route2": {
+      "type": "string",
+      "label": "Shutdown steps (use |)",
+      "max_length": 120,
+      "default": "Save work | Write next step | Close desk"
+    }
+  }
+}

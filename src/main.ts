@@ -1,66 +1,39 @@
-import { device } from "@shared/device";
-import { column, render, type Node } from "@busy-app/busy-lib";
-import manifest from "./appmeta/manifest.json";
+import {surface,panel,rect,label,read,persist,wrap,mint,amber,type Frame,type Key} from "@shared/surface";
+import {loadValues} from "@shared/settings";
 
-/** The name the app draws under; the device clears elements by this id. */
-const APP = manifest.id;
-
-/** How often the screen is redrawn. */
-const TICK_MS = 1000;
-
-const WHITE = "#FFFFFFFF";
-const SUBTLE_WHITE = "#FFFFFF80";
-
-/**
- * The frame drawn on every tick. The screen is 72×16, so two short lines are about all that fits.
- */
-function frame(ticks: number): Node {
-  return column({ justify: "center", align: "center" }, [
-    { type: "text", id: "title", text: "Hello", font: "bold", color: WHITE },
-    {
-      type: "text",
-      id: "ticks",
-      text: String(ticks),
-      font: "small",
-      color: SUBTLE_WHITE,
-    },
-  ]);
+const names=["Morning","Focus","Shutdown"];
+const defaults=["Water | Light | Stretch | Plan","Clear desk | Pick task | Silence phone","Save work | Write next step | Close desk"];
+let steps=defaults.map(split);
+function split(s:string){return s.split("|").map(x=>x.trim()).filter(Boolean).slice(0,7);}
+function day(){const d=new Date();return [d.getFullYear(),d.getMonth()+1,d.getDate()].join("-");}
+type Journal={day:string; steps:string; count:number};
+let route=read("route",0), records=read<Record<string,Journal>>("journal",{}), ready=false;
+function count(){
+ const record=records[route];
+ return record&&record.day===day()&&record.steps===steps[route].join("|")?Math.min(record.count,steps[route].length):0;
 }
-
-/** Sends one frame to the device. */
-async function draw(ticks: number): Promise<void> {
-  const elements = render(frame(ticks));
-  await device.DisplayDraw({ application_name: APP, priority: 50, elements });
+function draw():Frame{
+ const completed=count(), list=steps[route], finished=completed===list.length;
+ const view=[label("route",names[route].toUpperCase(),0,0,amber,"front","tiny"),
+ {...label("step",finished?"All done!":list[completed],0,7,mint),width:72,scroll_rate:30},
+ ...panel("RITUAL RAIL",["Route "+(route+1)+"/3: "+names[route],completed+" of "+list.length+" complete",
+ finished?"All stops complete":"> "+list[completed].slice(0,27),list[completed+1]?"Next: "+list[completed+1].slice(0,22):"",
+ "Wheel: route / click: done","Start: undo last step"])];
+ for(let i=0;i<list.length;i++)view.push(rect("pip"+i,43+i*4,1,3,3,i<completed?mint:"#394551FF"));
+ return view;
 }
-
-/**
- * Entry point, called at the end of the file: the device runs this script from top to bottom and starts nothing by itself.
- */
-function main(): void {
-  let ticks = 0;
-  let stopped = false;
-
-  const report = (err: unknown) =>
-    console.error(`${APP}: ${err instanceof Error ? err.message : String(err)}`);
-
-  void draw(ticks).catch(report);
-
-  // Tick errors are reported, not thrown: one failed request must not stop the loop.
-  const timer = setInterval(() => {
-    ticks += 1;
-    void draw(ticks).catch(report);
-  }, TICK_MS);
-
-  // Back leaves the app. Once the timer is cleared and the handler detached, nothing keeps it alive and the device takes the screen back.
-  const unbind = listen("input", (event) => {
-    if (stopped || event.key !== "back" || event.action !== "short") return;
-
-    stopped = true;
-    clearInterval(timer);
-
-    // Not detached from inside the handler itself: with nothing else left the unbind stops the app on the spot, while this handler is still running.
-    setTimeout(unbind, 0);
-  });
+function input(k:Key){
+ if(!ready)return;
+ if(k==="up"||k==="down"){route=wrap(route+(k==="up"?1:-1),3);persist("route",route);}
+ if(k==="ok"||k==="start"){
+   const n=Math.min(steps[route].length,Math.max(0,count()+(k==="ok"?1:-1)));
+   records[route]={day:day(),steps:steps[route].join("|"),count:n};persist("journal",records);
+ }
+ console.log("route",names[route],count(),steps[route].join("|"));
 }
-
-main();
+const refresh=surface(draw,input);
+void loadValues().then(settings=>{
+ steps=defaults.map((value,i)=>{const list=split(String(settings?.["route"+i]||value));return list.length?list:split(value);});
+ ready=true;refresh();
+ console.log("resumed",names[route],count(),steps[route].join("|"));
+});
