@@ -2,12 +2,40 @@
 
 Keep three daily routines on your desk with custom steps, undo and automatic progress recovery.
 
-Choose Morning, Focus or Shutdown with the wheel. Click to finish a step, or tap Start to undo. In app settings, enter up to seven short ASCII steps per route separated by |. Each routine keeps its own progress for the day. Changing a routine starts its new list at the first step.
+Leave the next small job in sight while your hands are busy. Each of the three routines has its own position, so you can check your shutdown list at lunch and still find the morning routine where you left it.
 
-## Run locally
+## Pick a routine at the desk
 
-From this folder, run `~/.busy-emulator/bin/busy-emulator dev --once` with BUSY Bar Emulator open. Back exits.
+1. Turn the wheel through **Morning**, **Focus** and **Shutdown**. The name appears above the current step. The rear display also shows the next step if there is one.
+2. For the default morning routine, start with **Water**. Click once when you have done it. The front advances to **Light** and fills the first progress square.
+3. Keep turning the wheel if you need a different list. Changing views preserves each routine’s position.
 
-![BUSY Bar front display](screenshots/front-1.png)
+![The wheel moves from the Shutdown step Save work to the Morning step Water.](media/guide/choose-morning.gif)
 
-[Watch the controls on firmware](media/controls.mp4)
+## Undo a step you skipped
+
+1. Press **Start** to move back one step on the active routine. In this example **Light** goes back to **Water**.
+2. Complete the step, then click to advance again. The filled squares count the steps you have actually marked.
+3. On completing the last step, leave the bar on **All done!** or turn to another routine. The date change starts a fresh round.
+
+![The morning routine advances from Water to Light and returns to Water after undo.](media/guide/undo-morning-step.gif)
+
+## Write a routine you can read at a glance
+
+In app settings, enter up to seven short ASCII steps per route, divided by `|`. A focus list for recording audio might read `Close door | Plug in mic | Check level | Record`. Short verbs fit on the front display. Longer steps scroll.
+
+Progress is stored with the date and the exact list. Reopening the app on the same day brings back the recorded count. Editing the list restarts that routine at its first step.
+
+## Run in the emulator
+
+Open BUSY Bar Emulator. From this repository, run:
+
+```sh
+~/.busy-emulator/bin/busy-emulator dev --once
+```
+
+Press **Back** to exit.
+
+The GIFs are excerpts from the emulator recording. Each front-display pixel is shown at 9× its original width and height. The end frames pause for reading.
+
+[Full recording](media/controls.mp4) · [Rear display](screenshots/back-1.png) · [Firmware test](EMULATOR-QA.md) · [MIT license](LICENSE)
