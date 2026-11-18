@@ -1,6 +1,17 @@
 {
   "app": "busybar-ritual-rail",
-  "sha256": "cd2238a365339e0bc198b315fb98f6830e51373c227741cd0452b46353d59c19",
+  "sha256": "d9b6766ddececea64e67a4a5a2a40a96929031e6f2d6e1d6f1764f8669442d93",
+  "rapid_input_test": {
+    "app": "io.ncoooooper.ritualrail",
+    "sha256": "d9b6766ddececea64e67a4a5a2a40a96929031e6f2d6e1d6f1764f8669442d93",
+    "firmware": {
+      "name": "1.3.1",
+      "commit": "8edd2da4"
+    },
+    "heap_peak_kib": 93.1,
+    "budget_kib": 128.0,
+    "exit": "finished"
+  },
   "firmware": "1.3.1",
   "cell": 16,
   "lit": 14,
