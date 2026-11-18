@@ -39,3 +39,11 @@ Press **Back** to exit.
 The GIFs are excerpts from the emulator recording. Each front-display pixel is shown at 9× its original width and height. The end frames pause for reading.
 
 [Full recording](media/controls.mp4) · [Rear display](screenshots/back-1.png) · [Firmware test](EMULATOR-QA.md) · [MIT license](LICENSE)
+
+## Device settings
+
+Open **Apps → Ritual Rail → Setup**. Save the fields and reopen the app to use the new values.
+
+- **Morning steps (use |)** (`route0`). Default: `Water | Light | Stretch | Plan`.
+- **Focus steps (use |)** (`route1`). Default: `Clear desk | Pick task | Silence phone`.
+- **Shutdown steps (use |)** (`route2`). Default: `Save work | Write next step | Close desk`.
