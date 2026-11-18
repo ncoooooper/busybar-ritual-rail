@@ -31,7 +31,7 @@ function input(k:Key){
  }
  console.log("route",names[route],count(),steps[route].join("|"));
 }
-const refresh=surface(draw,input);
+const refresh=surface(draw,input,undefined,{enabled:false});
 void loadValues().then(settings=>{
  steps=defaults.map((value,i)=>{const list=split(String(settings?.["route"+i]||value));return list.length?list:split(value);});
  ready=true;refresh();
